@@ -3,6 +3,11 @@ module Main where
 import Data.Char (isDigit, isAlpha, isAlphaNum, isSpace)
 
 -- TODO: Note we should create individual Enumurations for the operators rather than using only one.
+data Span = Span
+    { start :: Int
+    , end :: Int
+    }
+
 data Token = Operator String
            | Identifier String
            | Number Int
