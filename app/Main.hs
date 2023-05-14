@@ -16,7 +16,7 @@ data Token = Operator String
            | Comma
            | Aestrisk
            | EndOfInput
-           | InvalidChar Char
+           | InvalidToken String
            deriving (Eq, Show)
 
 nextToken :: String -> [Token]
@@ -35,5 +35,5 @@ nextToken (c:cs)   = Operator [c] : nextToken cs
 
 main :: IO ()
 main = do
-    let input = "2 * 2 => <- -> ++ --"
+    let input = "2 * 2 => <- -> ++ -- |"
     print $ nextToken input
