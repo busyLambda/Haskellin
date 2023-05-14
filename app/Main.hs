@@ -29,11 +29,11 @@ lexer (c:cs) | isAlpha c = let (chars, rest) = span isAlphaNum (c:cs)
 lexer ('(':cs) = OpenParen : lexer cs
 lexer (')':cs) = CloseParen : lexer cs
 lexer (',':cs) = Comma : lexer cs
-lexer (c:d:cs) | [c, d] `elem` ["==", "/=", ">=", "<=", "->"] =
+lexer (c:d:cs) | [c, d] `elem` ["==", "!=", ">=", "<=", "--", "++", "=>", "->", "<-"] =
     Operator [c, d] : lexer cs
 lexer (c:cs)   = Operator [c] : lexer cs
 
 main :: IO ()
 main = do
-    let input = "2 * 2"
+    let input = "2 * 2 => <- -> ++ --"
     print $ lexer input
