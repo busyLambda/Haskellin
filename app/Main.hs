@@ -9,6 +9,21 @@ data Span = Span
     }
 
 data Token = Operator String
+            -- Operators
+           | Add -- +
+           | Ext -- -
+           | Mult -- *
+           | Div -- /
+           | Eq -- =
+           | RightThickArrow -- =->
+           | RightArrow -- ->
+           | LeftArrow -- <-
+           | EqEq -- ==
+           | NotEq -- !=
+           | GtEq -- >=
+           | LtEq -- =<
+           | AAdd -- ++
+           | EExt -- --
            | Identifier String
            | Number Int
            | OpenParen
@@ -16,6 +31,7 @@ data Token = Operator String
            | Comma
            | Aestrisk
            | EndOfInput
+           | UnknownToken
            | InvalidToken String
            deriving (Eq, Show)
 
@@ -31,9 +47,15 @@ nextToken (')':cs) = CloseParen : nextToken cs
 nextToken (',':cs) = Comma : nextToken cs
 nextToken (c:d:cs) | [c, d] `elem` ["==", "!=", ">=", "<=", "--", "++", "=>", "->", "<-"] =
     Operator [c, d] : nextToken cs
-nextToken (c:cs)   = Operator [c] : nextToken cs
+nextToken (c:cs)   = case c of
+    '=' -> Eq : nextToken cs
+    '+' -> Add : nextToken cs
+    '-' -> Ext : nextToken cs
+    '/' -> Div : nextToken cs
+    '*' -> Mult : nextToken cs
+    _ -> UnknownToken : nextToken cs
 
 main :: IO ()
 main = do
-    let input = "2 * 2 => <- -> ++ -- |"
+    let input = "2 * (2 + (4 - 12))"
     print $ nextToken input
