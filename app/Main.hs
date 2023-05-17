@@ -45,8 +45,18 @@ nextToken (c:cs) | isAlpha c = let (chars, rest) = span isAlphaNum (c:cs)
 nextToken ('(':cs) = OpenParen : nextToken cs
 nextToken (')':cs) = CloseParen : nextToken cs
 nextToken (',':cs) = Comma : nextToken cs
-nextToken (c:d:cs) | [c, d] `elem` ["==", "!=", ">=", "<=", "--", "++", "=>", "->", "<-"] =
-    Operator [c, d] : nextToken cs
+nextToken (c:d:cs) | [c, d] `elem` ["==", "!=", ">=", "<=", "--", "++", "=>", "->", "<-"] = case [c, d] of
+    "==" -> EqEq : nextToken cs
+    "!=" -> NotEq : nextToken cs
+    ">=" -> GtEq : nextToken cs
+    "=<" -> LtEq : nextToken cs
+    "--" -> EExt : nextToken cs
+    "++" -> AAdd : nextToken cs
+    "=>" -> RightThickArrow : nextToken cs
+    "->" -> RightArrow : nextToken cs
+    "<-" -> LeftArrow : nextToken cs
+    _ -> UnknownToken : nextToken cs
+
 nextToken (c:cs)   = case c of
     '=' -> Eq : nextToken cs
     '+' -> Add : nextToken cs
@@ -57,5 +67,5 @@ nextToken (c:cs)   = case c of
 
 main :: IO ()
 main = do
-    let input = "2 * (2 + (4 - 12))"
+    let input = "== --"
     print $ nextToken input
