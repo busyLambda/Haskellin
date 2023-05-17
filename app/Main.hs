@@ -49,7 +49,7 @@ nextToken (c:d:cs) | [c, d] `elem` ["==", "!=", ">=", "<=", "--", "++", "=>", "-
     "==" -> EqEq : nextToken cs
     "!=" -> NotEq : nextToken cs
     ">=" -> GtEq : nextToken cs
-    "=<" -> LtEq : nextToken cs
+    "<=" -> LtEq : nextToken cs
     "--" -> EExt : nextToken cs
     "++" -> AAdd : nextToken cs
     "=>" -> RightThickArrow : nextToken cs
@@ -67,5 +67,5 @@ nextToken (c:cs)   = case c of
 
 main :: IO ()
 main = do
-    let input = "== --"
+    let input = "== != >= <= -- ++ => -> <-"
     print $ nextToken input
